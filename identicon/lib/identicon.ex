@@ -9,7 +9,11 @@ defmodule Identicon do
 def build_grid(%Identicon.Image{hex: hex} = image) do
   hex
   |> Enum.chunk(3)
- 
+end
+
+def mirror_row(row) do
+  [first, second | _tail] = row
+  row ++  [second, first]
 end
 
 def pick_color(%Identicon.Image{hex: [r, g, b | _tail ]} = image) do
