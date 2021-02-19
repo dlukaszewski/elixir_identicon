@@ -10,9 +10,37 @@ defmodule Identicon do
     |>save_image(input)
   end
 
-  def save_image(image, input) do
-    File.write("#{input}.png", image)  
+  @doc """
+  Aaccepts string and convert it to hexadecimal number system.
+
+## Examples
+
+        iex> input = "banana"
+        iex> Identicon.hash_input(input)
+        %Identicon.Image{
+        color: nil,
+        grid: nil,
+        hex: [114, 179, 2, 191, 41, 122, 34, 138, 117, 115, 1, 35, 239, 239, 124, 65],
+        pixel_map: nil
+        }
+
+"""
+  def hash_input(input) do
+    hex = :crypto.hash(:md5, input)
+    |> :binary.bin_to_list
+
+    %Identicon.Image{hex: hex}
   end
+@doc """
+Function that saves identicon to file in png format
+"""
+  def save_image(image, input) do
+    File.write("#{input}.png", image)
+  end
+
+@doc """
+Function that drwas image
+"""
 
   def draw_image(%Identicon.Image{color: color, pixel_map: pixel_map}) do
     image = :egd.create(250, 250)
@@ -64,10 +92,5 @@ def pick_color(%Identicon.Image{hex: [r, g, b | _tail ]} = image) do
   %Identicon.Image{image | color: {r, g, b}}
 end
 
-  def hash_input(input) do
-    hex = :crypto.hash(:md5, input)
-    |> :binary.bin_to_list
 
-    %Identicon.Image{hex: hex}
-  end
 end
