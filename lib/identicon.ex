@@ -31,6 +31,29 @@ defmodule Identicon do
 
     %Identicon.Image{hex: hex}
   end
+  @doc """
+  Function that  selects first three numbers from map and set this numbers to color value
+
+  ## Examples
+        iex> image = Identicon.hash_input("banana")
+        %Identicon.Image{
+        color: nil,
+        grid: nil,
+        hex: [114, 179, 2, 191, 41, 122, 34, 138, 117, 115, 1, 35, 239, 239, 124, 65],
+        pixel_map: nil
+        }
+        iex>Identicon.pick_color(image)
+        %Identicon.Image{
+        color: {114, 179, 2},
+        grid: nil,
+        hex: [114, 179, 2, 191, 41, 122, 34, 138, 117, 115, 1, 35, 239, 239, 124, 65],
+        pixel_map: nil
+        }
+
+  """
+  def pick_color(%Identicon.Image{hex: [r, g, b | _tail ]} = image) do
+  %Identicon.Image{image | color: {r, g, b}}
+end
 @doc """
 Function that saves identicon to file in png format
 """
@@ -88,9 +111,7 @@ def mirror_row(row) do
   row ++  [second, first]
 end
 
-def pick_color(%Identicon.Image{hex: [r, g, b | _tail ]} = image) do
-  %Identicon.Image{image | color: {r, g, b}}
-end
+
 
 
 end
